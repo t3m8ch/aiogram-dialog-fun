@@ -1,5 +1,8 @@
+import random
+
+from aiogram import types
 from aiogram.dispatcher.filters.state import StatesGroup, State
-from aiogram_dialog import Window, Dialog
+from aiogram_dialog import Window, Dialog, DialogManager
 from aiogram_dialog.widgets.kbd import Button
 from aiogram_dialog.widgets.text import Const, Format, Case
 
@@ -25,9 +28,18 @@ async def get_data(**kwargs):
     }
 
 
+async def on_random_name(call: types.CallbackQuery,
+                         button: Button,
+                         manager: DialogManager):
+    await call.message.answer(random.choice((
+        "Artem", "Mikhail", "Olga", "Maria"
+    )))
+
+
 menu_window = Window(
     Format("Hello, {name}"),
     Button(Const("Useless button"), id="nothing"),
+    Button(Const("Random name"), id="randname", on_click=on_random_name),
     color_text,
     state=MySG.main,
     getter=get_data
