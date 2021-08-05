@@ -3,8 +3,9 @@ import random
 
 from aiogram import types
 from aiogram.dispatcher.filters.state import StatesGroup, State
+from aiogram.types import CallbackQuery
 from aiogram_dialog import Window, Dialog, DialogManager, ChatEvent
-from aiogram_dialog.widgets.kbd import Button, Group, Checkbox
+from aiogram_dialog.widgets.kbd import Button, Group, Checkbox, Radio, Select
 from aiogram_dialog.widgets.text import Const, Format, Case
 
 
@@ -25,7 +26,8 @@ color_text = Case(
 async def get_data(**kwargs):
     return {
         "name": "T3M8CH",
-        "color": "red"
+        "color": "red",
+        "languages": ["RU", "EN", "DE"]
     }
 
 
@@ -50,6 +52,11 @@ async def on_check_state_change(event: ChatEvent, checkbox: Checkbox,
     )
 
 
+async def on_language_selected(call: CallbackQuery, select: Select,
+                               manager: DialogManager, item: str):
+    await call.message.answer(f"Вы выбрали: {item}")
+
+
 menu_window = Window(
     Format("Hello, {name}"),
     Group(
@@ -64,6 +71,14 @@ menu_window = Window(
         id="check",
         default=True,
         on_state_changed=on_check_state_change
+    ),
+    Radio(
+        Format("🔘 {item}"),
+        Format("⚪️ {item}"),
+        id="r_languages",
+        item_id_getter=lambda item: item,
+        items="languages",
+        on_click=on_language_selected
     ),
     color_text,
     state=MySG.main,
