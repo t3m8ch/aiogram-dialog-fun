@@ -10,7 +10,7 @@ from aiogram.dispatcher.storage import BaseStorage
 from aiogram.utils import executor
 from pydantic_loader.toml_config import load_toml
 
-from app.bot import register_handlers
+from app.bot import register_handlers, register_dialogs
 from app.config import Config, FSMConfig
 
 
@@ -30,6 +30,7 @@ def run():
     dispatcher = Dispatcher(bot, storage=fsm_storage, loop=event_loop)
 
     register_handlers(dispatcher)
+    register_dialogs(dispatcher)
 
     executor.start_polling(dispatcher)
 
