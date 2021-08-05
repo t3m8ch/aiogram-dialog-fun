@@ -94,7 +94,8 @@ menu_window = Window(
         id="m_fruits",
         item_id_getter=operator.itemgetter(1),
         items="fruits",
-        max_selected=2
+        max_selected=2,
+        when=lambda data, _, __: data["name"] == "T3M8CH"
     ),
     color_text,
     state=MySG.main,
