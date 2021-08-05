@@ -2,7 +2,7 @@ from aiogram import types, Dispatcher
 from aiogram.dispatcher.filters import Command
 from aiogram_dialog import DialogManager, StartMode
 
-from app.bot.dialogs.main_dialog import MySG
+from app.bot.dialogs.menu_dialog import MySG
 
 
 async def on_menu_command(message: types.Message,

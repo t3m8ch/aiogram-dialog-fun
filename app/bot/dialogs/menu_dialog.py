@@ -8,7 +8,7 @@ class MySG(StatesGroup):
     main = State()
 
 
-text = Case(
+color_text = Case(
     {
         "red": Const("Square"),
         "green": Const("Unicorn"),
@@ -25,12 +25,12 @@ async def get_data(**kwargs):
     }
 
 
-main_window = Window(
+menu_window = Window(
     Format("Hello, {name}"),
     Button(Const("Useless button"), id="nothing"),
-    text,
+    color_text,
     state=MySG.main,
     getter=get_data
 )
 
-main_dialog = Dialog(main_window)
+menu_dialog = Dialog(menu_window)
