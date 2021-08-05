@@ -1,11 +1,13 @@
 import logging
+import operator
 import random
 
 from aiogram import types
 from aiogram.dispatcher.filters.state import StatesGroup, State
 from aiogram.types import CallbackQuery
 from aiogram_dialog import Window, Dialog, DialogManager, ChatEvent
-from aiogram_dialog.widgets.kbd import Button, Group, Checkbox, Radio, Select
+from aiogram_dialog.widgets.kbd import Button, Group, Checkbox, Radio, Select, \
+    Multiselect
 from aiogram_dialog.widgets.text import Const, Format, Case
 
 
@@ -27,7 +29,13 @@ async def get_data(**kwargs):
     return {
         "name": "T3M8CH",
         "color": "red",
-        "languages": ["RU", "EN", "DE"]
+        "languages": ["RU", "EN", "DE"],
+        "fruits": [
+            ("Apple", '1'),
+            ("Pear", '2'),
+            ("Orange", '3'),
+            ("Banana", '4'),
+        ]
     }
 
 
@@ -79,6 +87,14 @@ menu_window = Window(
         item_id_getter=lambda item: item,
         items="languages",
         on_state_changed=on_language_selected,
+    ),
+    Multiselect(
+        Format("✓ {item[0]}"),
+        Format("{item[0]}"),
+        id="m_fruits",
+        item_id_getter=operator.itemgetter(1),
+        items="fruits",
+        max_selected=2
     ),
     color_text,
     state=MySG.main,
