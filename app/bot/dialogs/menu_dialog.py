@@ -78,7 +78,7 @@ menu_window = Window(
         id="r_languages",
         item_id_getter=lambda item: item,
         items="languages",
-        on_click=on_language_selected
+        on_state_changed=on_language_selected,
     ),
     color_text,
     state=MySG.main,
