@@ -1,9 +1,10 @@
+import logging
 import random
 
 from aiogram import types
 from aiogram.dispatcher.filters.state import StatesGroup, State
-from aiogram_dialog import Window, Dialog, DialogManager
-from aiogram_dialog.widgets.kbd import Button, Group
+from aiogram_dialog import Window, Dialog, DialogManager, ChatEvent
+from aiogram_dialog.widgets.kbd import Button, Group, Checkbox
 from aiogram_dialog.widgets.text import Const, Format, Case
 
 
@@ -42,6 +43,13 @@ async def on_random_number(call: types.CallbackQuery,
     await call.message.answer(str(random.randint(1, 100)))
 
 
+async def on_check_state_change(event: ChatEvent, checkbox: Checkbox,
+                                manager: DialogManager):
+    logging.debug(
+        "-"*30 + f" Check status changed: {checkbox.is_checked(manager)}"
+    )
+
+
 menu_window = Window(
     Format("Hello, {name}"),
     Group(
@@ -49,6 +57,13 @@ menu_window = Window(
         Button(Const("Random name"), id="randname", on_click=on_random_name),
         Button(Const("Random number"), id="randnum", on_click=on_random_number),
         width=2
+    ),
+    Checkbox(
+        Const("✅ On"),
+        Const("❌ Off"),
+        id="check",
+        default=True,
+        on_state_changed=on_check_state_change
     ),
     color_text,
     state=MySG.main,
