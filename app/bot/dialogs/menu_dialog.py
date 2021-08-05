@@ -3,7 +3,7 @@ import random
 from aiogram import types
 from aiogram.dispatcher.filters.state import StatesGroup, State
 from aiogram_dialog import Window, Dialog, DialogManager
-from aiogram_dialog.widgets.kbd import Button
+from aiogram_dialog.widgets.kbd import Button, Group
 from aiogram_dialog.widgets.text import Const, Format, Case
 
 
@@ -36,10 +36,20 @@ async def on_random_name(call: types.CallbackQuery,
     )))
 
 
+async def on_random_number(call: types.CallbackQuery,
+                           button: Button,
+                           manager: DialogManager):
+    await call.message.answer(str(random.randint(1, 100)))
+
+
 menu_window = Window(
     Format("Hello, {name}"),
-    Button(Const("Useless button"), id="nothing"),
-    Button(Const("Random name"), id="randname", on_click=on_random_name),
+    Group(
+        Button(Const("Useless button"), id="nothing"),
+        Button(Const("Random name"), id="randname", on_click=on_random_name),
+        Button(Const("Random number"), id="randnum", on_click=on_random_number),
+        width=2
+    ),
     color_text,
     state=MySG.main,
     getter=get_data
