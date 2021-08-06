@@ -1,12 +1,12 @@
 from aiogram import Dispatcher
 
-from app.bot.handlers.private.animals import register_animals_handlers
-from app.bot.handlers.private.calendar import register_calendar_handlers
-from app.bot.handlers.private.echo import register_echo_handlers
-from app.bot.handlers.private.help import register_help_handlers
-from app.bot.handlers.private.menu import register_menu_handlers
-from app.bot.handlers.private.scrolling import register_scrolling_handlers
-from app.bot.handlers.private.start import register_start_handlers
+from .animals import register_animals_handlers
+from .calendar import register_calendar_handlers
+from .echo import register_echo_handlers
+from .help import register_help_handlers
+from .menu import register_menu_handlers
+from .scrolling import register_scrolling_handlers
+from .start import register_start_handlers
 
 
 def register_handlers(dispatcher: Dispatcher):
