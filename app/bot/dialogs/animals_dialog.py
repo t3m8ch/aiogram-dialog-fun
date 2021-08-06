@@ -2,7 +2,7 @@ from aiogram.dispatcher.filters.state import StatesGroup, State
 from aiogram.types import CallbackQuery
 from aiogram_dialog import Window, Dialog, DialogManager
 from aiogram_dialog.widgets.kbd import Select
-from aiogram_dialog.widgets.text import Jinja, Format, Const
+from aiogram_dialog.widgets.text import Jinja, Format
 
 
 class AnimalsSG(StatesGroup):
@@ -10,15 +10,22 @@ class AnimalsSG(StatesGroup):
     selected = State()
 
 
-async def get_data(**kwargs):
+async def get_animals(**kwargs):
     return {
         "title": "Animals",
         "animals": ["cat", "dog", "fox"]
     }
 
 
+async def get_selected_animal(dialog_manager: DialogManager, **kwargs):
+    return {
+        "animal": dialog_manager.current_context().dialog_data["animal"]
+    }
+
+
 async def on_animal_selected(call: CallbackQuery, select: Select,
                              manager: DialogManager, item: str):
+    await manager.update({"animal": item})
     await manager.dialog().next(manager)
 
 
@@ -40,10 +47,11 @@ animals_dialog = Dialog(
             on_click=on_animal_selected
         ),
         state=AnimalsSG.animals,
-        getter=get_data
+        getter=get_animals
     ),
     Window(
-        Const("Вы выбрали животное"),
-        state=AnimalsSG.selected
+        Format("Вы выбрали {animal}"),
+        state=AnimalsSG.selected,
+        getter=get_selected_animal
     )
 )
